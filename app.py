@@ -102,14 +102,17 @@ def calculate():
         # Get form data
         matric_percentage = float(request.form['matric_percentage'])
         fsc_percentage = float(request.form['fsc_percentage'])
-        nu_test_marks = float(request.form['nu_test_marks'])
-        wrong_mcqs_except_english = int(request.form['wrong_mcqs_except_english'])
-        wrong_mcqs_english = int(request.form['wrong_mcqs_english'])
+        mcqs_attempted_except_english = float(request.form['mcqs_attempted_except_english'])
+        mcqs_correct_except_english = int(request.form['mcqs_correct_except_english'])
+        mcqs_attempted_english = float(request.form['mcqs_attempted_english'])
+        mcqs_correct_english = int(request.form['mcqs_correct_english'])
 
         # Calculate the aggregate
         aggregate = (matric_percentage * 0.1) + \
                     (fsc_percentage * 0.4) + \
-                    ((nu_test_marks - (wrong_mcqs_except_english * 0.25) - (wrong_mcqs_english * 0.25 * 0.33)) * 0.5)
+                    (((mcqs_correct_except_english+(mcqs_correct_english*0.33)) -
+                     (((mcqs_attempted_except_english-mcqs_correct_except_english) * 0.25) +
+                      (mcqs_attempted_english-mcqs_correct_english)*0.33*0.25)) * 0.5)
         
         # Create the bar chart
         program_aggregates = {
